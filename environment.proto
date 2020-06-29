@@ -8,7 +8,7 @@ import "google/protobuf/timestamp.proto";
 // This is the connection between the orchestrator and the Env backend.
 // This service is hosted on the backend executable, and contacted by the 
 // orchestrator.
-service Environment {
+service EnvironmentEndpoint {
   rpc Start(EnvStartRequest) returns (EnvStartReply) {}
   rpc End(EnvEndRequest) returns (EnvEndReply) {}
   rpc Update(EnvUpdateRequest) returns (EnvUpdateReply) {}
