@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+package cogment;
+
+import "google/protobuf/timestamp.proto";
+
+// **************** VERSIONING ***************** //
+message VersionRequest {}
+
+message VersionInfo {
+  message Version {
+    string name = 1;
+    string version = 2;
+  }
+
+  repeated Version versions = 1;
+}
+
+// **************** CONFIGURATION ***************** //
+
+message TrialConfig {
+  bytes content = 1;
+}
+
+message ActorConfig {
+  bytes content = 1;
+}
+
+message EnvironmentConfig {
+  bytes content = 1;
+}
+
+message EnvironmentParams {
+  string endpoint = 1;
+  EnvironmentConfig config = 2;
+}
+
+message ActorParams {
+  string actor_class = 1;
+  string endpoint = 2;
+  ActorConfig config = 3;
+}
+
+message TrialParams {
+  // Client-provided configuration
+  TrialConfig trial_config = 1;
+  
+  // Environment data
+  EnvironmentParams environment = 2;
+
+  // Actor Data
+  repeated ActorParams actors = 3;
+
+
+  // After that many steps happen, the trial is automatically ended.
+  uint32 max_steps = 4;
+
+  // After this amount of time (in seconds) has elapsed without any activity
+  // on a trial, that trial is elligible for garbage collection 
+  uint32 max_inactivity = 5;
+}
+
+// **************** OBSERVATIONS ***************** //
+
+message ObservationData {
+  // Must match the type in the config's actor_classes->[i]->observation_space (snapshot = true)
+  // Must match the type in the config's actor_classes->[i]->observation_space_delta (snapshot = false)
+  bytes content = 1;
+  bool snapshot = 2;
+}
+
+// A single observation, as perceived by a single actor.
+message Observation {
+  uint64 tick_id = 1;
+  google.protobuf.Timestamp timestamp = 2;
+
+  ObservationData data = 3;
+}
+
+
+// **************** ACTIONS ***************** //
+message Action {
+  // Must match the type in the config's actor_classes->[i]->action_space
+  bytes content = 1;
+}
+
+// **************** FEEDBACK ***************** //
+message Feedback {
+  uint32 actor_id = 1;
+  int32 tick_id = 2;
+
+  float value = 3;
+  float confidence = 4;
+
+  // Must match the type in the config's actor_classes->[i]->feedback_info
+  bytes content = 5;
+}

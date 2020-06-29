@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package cogment;
+
+message MessageDispatchRequest {
+  repeated int32 receiver = 1;
+}
+
+message MessageDispatchReply {
+  
+}

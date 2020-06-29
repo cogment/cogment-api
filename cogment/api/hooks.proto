@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package cogment;
+
+import "cogment/api/common.proto";
+
+service TrialHooks {
+  rpc PreTrial(TrialContext) returns (TrialContext) {}
+  
+  rpc Version(VersionRequest) returns (VersionInfo) {}
+}
+
+message TrialContext {
+  TrialParams params = 1;
+
+  string trial_id = 2;
+  string user_id = 3;
+}

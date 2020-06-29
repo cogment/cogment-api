@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package cogment;
+
+import "cogment/api/common.proto";
+
+// This is the connection between a model application and the orchestrator.
+// The service is hosted on the model. 
+service AgentEndpoint {
+  rpc Start(AgentStartRequest) returns (AgentStartReply) {}
+  rpc End(AgentEndRequest) returns (AgentEndReply) {}
+  rpc Decide(AgentDecideRequest) returns (AgentDecideReply) {}
+  rpc Reward(AgentRewardRequest) returns (AgentRewardReply) {}
+  rpc Version(VersionRequest) returns (VersionInfo) {}
+}
+
+message AgentStartRequest {
+  string trial_id = 1;
+  int32 actor_id = 2;
+  
+  ActorConfig config = 3;
+  TrialConfig trial_config = 5;
+  
+  repeated int32 actor_counts = 4;
+}
+
+message AgentStartReply {}
+
+message AgentEndRequest {
+  string trial_id = 1;
+  int32 actor_id = 2;
+}
+
+message AgentEndReply {}
+
+// TODO: This is not great. As it stands, if two agents share the same 
+// observation, we have to send it twice.
+message AgentDecideRequest {
+  string trial_id = 1;
+  int32 actor_id = 2;
+  
+  Observation observation = 3;
+}
+
+message AgentDecideReply {
+  Action action = 1;
+
+  repeated Feedback feedbacks = 2;
+}
+
+message Reward {
+  float value = 1;
+  float confidence = 2;
+
+  // The individual feedbacks that were used to generate the reward.
+  repeated Feedback feedbacks = 3;
+}
+
+message AgentRewardRequest {
+  string trial_id = 1;
+  int32 actor_id = 2;
+  int32 tick_id = 4;
+
+  Reward reward = 3;  
+}
+
+message AgentRewardReply {}

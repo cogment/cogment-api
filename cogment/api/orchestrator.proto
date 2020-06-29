@@ -1,0 +1,171 @@
+syntax = "proto3";
+
+package cogment;
+
+import "cogment/api/common.proto";
+import "cogment/api/agent.proto";
+import "cogment/api/environment.proto";
+import "cogment/api/message.proto";
+
+// This service is used to manage Trial lifecycle.
+service TrialLifecycle {
+  // Begin a new trial.
+  // Expected headers: None
+  rpc StartTrial(TrialStartRequest) returns (TrialStartReply) {}
+
+  // Terminate an existing trial.
+  // Expected headers: 
+  // - trial-id
+  rpc TerminateTrial(TerminateTrialRequest) returns (TerminateTrialReply) {}
+
+  // Broadcast a message to the members of a trial.
+  // Expected headers: 
+  // - trial-id
+  rpc SendMessage(MasterMessageDispatchRequest) returns (MessageDispatchReply) {}
+
+  // Get extra information about a specific trial.
+  // Expected headers: 
+  // - trial-id <optional>
+  rpc TrialInfo(TrialInfoRequest) returns (TrialInfoReply) {}
+
+  // Expected headers: None
+  rpc Version(VersionRequest) returns (VersionInfo) {}
+}
+
+// Encodes a request from a master to start a new trial.
+message TrialStartRequest {
+  // If the env has client-specified config associated with a startup request.
+  TrialConfig config = 1;
+
+  // Bookeeping identifier
+  string user_id = 2;
+}
+
+// Encodes information about the environment as
+message TrialStartReply {
+  // This trial identifier is used to match requests to trials
+  string trial_id = 1;
+
+  // One value per actor within the trial, representing the actor_class id of
+  // that actor.
+  repeated uint32 actor_class_idx = 6;
+}
+
+message TerminateTrialRequest {}
+message TerminateTrialReply {}
+
+message MasterMessageDispatchRequest {
+  // Send the message to these actors
+  repeated uint32 send_to_actor = 1;
+
+  // Wether or not to send the message to the environment
+  bool send_to_env = 2;
+
+  // TBD
+}
+
+
+message TrialInfoRequest {
+  // Request that the latest observations for that trial be provided.
+  bool get_latest_observation = 1;
+}
+
+enum TrialState {
+  UNKNOWN = 0;
+  INITIALIZING = 1;
+  PENDING = 2;
+  RUNNING = 3;
+  TERMINATING = 4;
+  ENDED = 5;
+}
+
+message TrialInfo {
+  string trial_id = 1;
+  TrialState state = 2;
+
+  // Only present if get_latest_observation is specified in the request.
+  ObservationSet latest_observation = 3;
+}
+
+message TrialInfoReply {
+  repeated TrialInfo trial = 1;
+}
+
+
+// This service is used to behave as an actor within a trial.
+service ActorEndpoint {
+  // Expected headers: None
+  rpc JoinTrial(TrialJoinRequest) returns (TrialJoinReply) {}
+
+  // Expected headers: 
+  // - trial-id
+  // - actor-id
+  rpc ActionStream(stream TrialActionRequest) returns (stream TrialActionReply) {}
+  
+  // Expected headers: 
+  // - trial-id
+  // - actor-id
+  rpc Action(TrialActionRequest) returns (TrialActionReply) {}
+  
+  // Expected headers: 
+  // - trial-id
+  // - actor-id
+  rpc Heartbeat(TrialHeartbeatRequest) returns (TrialHeartbeatReply) {}
+
+  // Expected headers: 
+  // - trial-id
+  // - actor-id
+  rpc GiveFeedback(TrialFeedbackRequest) returns (TrialFeedbackReply) {}
+  
+  rpc Version(VersionRequest) returns (VersionInfo) {}
+}
+
+// Encodes a request from a client instance to join an existing trial.
+message TrialJoinRequest {
+  // This trial identifier is used to match requests to trials
+  // If left empty, 
+  string trial_id = 1;
+
+  // The actor_class we are joining as.
+  // If left empty, one will be picked.
+  string actor_class = 2;
+
+  // The actor ID we are joining as. If set to -1, a slot will be assigned/
+  int32 actor_id = 3;
+}
+
+message TrialJoinReply {
+  // The actor class we have joined as.
+  string actor_class = 1;
+
+  // The actor ID that was assigned to us.
+  int32 actor_id = 2;
+
+  // The number of actors present in the trial.
+  // There will be one entry per actor class.
+  repeated int32 actor_counts = 3;
+}
+
+message TrialHeartbeatRequest {}
+
+message TrialHeartbeatReply {}
+
+message TrialActionRequest {
+  // The action that is being taken.
+  Action action = 1;
+}
+
+message TrialActionReply {
+  Observation observation = 1;
+  Reward reward = 2;
+  bool trial_is_over = 3;
+}
+
+message TrialFeedbackRequest {
+  // Reward information about previous states
+  repeated Feedback feedbacks = 2;
+}
+
+message TrialFeedbackReply {
+
+}

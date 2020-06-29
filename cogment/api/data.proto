@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package cogment;
+
+import "cogment/api/common.proto";
+import "cogment/api/agent.proto";
+import "cogment/api/environment.proto";
+
+service LogExporter {
+  rpc Log(stream DatalogMsg) returns (LogReply) {}
+}
+
+message DatalogMsg {
+  oneof msg {
+    TrialParams trial_params = 1;
+    DatalogSample sample = 2;
+  }
+}
+
+message DatalogSample {
+  string trial_id = 1;
+  string user_id = 5;
+  
+  ObservationSet observations = 2;
+
+  repeated Action actions = 3;
+  repeated Reward rewards = 4;
+}
+
+message LogReply {}

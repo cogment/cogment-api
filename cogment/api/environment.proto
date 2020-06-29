@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package cogment;
+
+import "cogment/api/common.proto";
+import "google/protobuf/timestamp.proto";
+
+// This is the connection between the orchestrator and the Env backend.
+// This service is hosted on the backend executable, and contacted by the 
+// orchestrator.
+service Environment {
+  rpc Start(EnvStartRequest) returns (EnvStartReply) {}
+  rpc End(EnvEndRequest) returns (EnvEndReply) {}
+  rpc Update(EnvUpdateRequest) returns (EnvUpdateReply) {}
+  rpc Version(VersionRequest) returns (VersionInfo) {}
+}
+
+
+// An observation set encodes the observations of ALL actors connected to 
+// an environment.
+message ObservationSet {
+  uint64 tick_id = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  
+  repeated ObservationData observations = 3;
+
+  // Maps actor ids to observations, It is assumed that actors are only
+  // ever assigned observations that are members of their observation space.
+  repeated int32 actors_map = 4;
+}
+
+// One action per actot within the environment
+message ActionSet {
+  // Must match the type in the config's actor_classes->[i]->action_space
+  repeated bytes actions = 1;
+}
+
+// **************** START ***************** //
+message EnvStartRequest {
+  string trial_id = 1;
+
+  EnvironmentConfig config = 2;
+  TrialConfig trial_config = 4;
+  
+  repeated int32 actor_counts = 3;
+}
+
+message EnvStartReply {
+  ObservationSet observation_set = 1;
+}
+
+// **************** END ***************** //
+message EnvEndRequest {
+  string trial_id = 1;
+}
+
+message EnvEndReply {}
+
+// **************** UPDATE ***************** //
+message EnvUpdateRequest {
+  string trial_id = 1;
+
+  ActionSet action_set = 2;
+
+  // Prevent the creation of Observation Deltas
+  bool reply_with_snapshot = 3;
+}
+
+message EnvUpdateReply {
+  ObservationSet observation_set = 1;
+
+  // Reward information about previous states
+  repeated Feedback feedbacks = 2;
+
+  bool end_trial = 3;
+}
