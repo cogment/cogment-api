@@ -15,20 +15,17 @@ service AgentEndpoint {
 }
 
 message AgentStartRequest {
-  string trial_id = 1;
-  int32 actor_id = 2;
+  TrialConfig trial_config = 1;
   
-  ActorConfig config = 3;
-  TrialConfig trial_config = 5;
+  ActorConfig config = 2;
   
-  repeated int32 actor_counts = 4;
+  // One entry per actor, defining that actor's class
+  repeated uint32 actor_class_idx = 3;
 }
 
 message AgentStartReply {}
 
 message AgentEndRequest {
-  string trial_id = 1;
-  int32 actor_id = 2;
 }
 
 message AgentEndReply {}
@@ -36,9 +33,6 @@ message AgentEndReply {}
 // TODO: This is not great. As it stands, if two agents share the same 
 // observation, we have to send it twice.
 message AgentDecideRequest {
-  string trial_id = 1;
-  int32 actor_id = 2;
-  
   Observation observation = 3;
 }
 
@@ -57,8 +51,6 @@ message Reward {
 }
 
 message AgentRewardRequest {
-  string trial_id = 1;
-  int32 actor_id = 2;
   int32 tick_id = 4;
 
   Reward reward = 3;  

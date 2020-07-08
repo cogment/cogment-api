@@ -37,12 +37,12 @@ message ActionSet {
 
 // **************** START ***************** //
 message EnvStartRequest {
-  string trial_id = 1;
+  TrialConfig trial_config = 1;
 
   EnvironmentConfig config = 2;
-  TrialConfig trial_config = 4;
-  
-  repeated int32 actor_counts = 3;
+
+  // One entry per actor, defining that actor's class
+  repeated uint32 actor_class_idx = 3;
 }
 
 message EnvStartReply {
@@ -50,9 +50,7 @@ message EnvStartReply {
 }
 
 // **************** END ***************** //
-message EnvEndRequest {
-  string trial_id = 1;
-}
+message EnvEndRequest {}
 
 message EnvEndReply {}
 
