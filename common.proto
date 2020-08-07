@@ -52,6 +52,7 @@ message EnvironmentParams {
 message ActorParams {
   string actor_class = 1;
   string endpoint = 2;
+  string name = 4;
   ActorConfig config = 3;
 }
 

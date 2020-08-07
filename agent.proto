@@ -19,7 +19,7 @@ package cogment;
 import "cogment/api/common.proto";
 
 // This is the connection between a model application and the orchestrator.
-// The service is hosted on the model. 
+// The service is hosted on the model.
 service AgentEndpoint {
   rpc Start(AgentStartRequest) returns (AgentStartReply) {}
   rpc End(AgentEndRequest) returns (AgentEndReply) {}
@@ -28,13 +28,19 @@ service AgentEndpoint {
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
 
+
 message AgentStartRequest {
-  TrialConfig trial_config = 1;
-  
-  ActorConfig config = 2;
-  
+  string actor_class = 1;
+  string impl_name = 2;
+  string name = 3;
+
+  ActorConfig config = 4;
+
+  TrialConfig trial_config = 5;
+
   // One entry per actor, defining that actor's class
-  repeated uint32 actor_class_idx = 3;
+  repeated int32 actor_class_idx = 6;
+  repeated string actor_names = 7;
 }
 
 message AgentStartReply {}
@@ -44,7 +50,7 @@ message AgentEndRequest {
 
 message AgentEndReply {}
 
-// TODO: This is not great. As it stands, if two agents share the same 
+// TODO: This is not great. As it stands, if two agents share the same
 // observation, we have to send it twice.
 message AgentDecideRequest {
   Observation observation = 3;
@@ -67,7 +73,7 @@ message Reward {
 message AgentRewardRequest {
   int32 tick_id = 4;
 
-  Reward reward = 3;  
+  Reward reward = 3;
 }
 
 message AgentRewardReply {}
