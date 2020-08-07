@@ -22,8 +22,10 @@ import "cogment/api/common.proto";
 // The service is hosted on the model.
 service AgentEndpoint {
   rpc Start(AgentStartRequest) returns (AgentStartReply) {}
+
+  rpc Decide(stream AgentDataRequest) returns (stream AgentActionReply) {}
+
   rpc End(AgentEndRequest) returns (AgentEndReply) {}
-  rpc Decide(AgentDecideRequest) returns (AgentDecideReply) {}
   rpc Reward(AgentRewardRequest) returns (AgentRewardReply) {}
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
@@ -50,15 +52,13 @@ message AgentEndRequest {
 
 message AgentEndReply {}
 
-// TODO: This is not great. As it stands, if two agents share the same
-// observation, we have to send it twice.
-message AgentDecideRequest {
-  Observation observation = 3;
+message AgentDataRequest {
+  Observation observation = 1;
+  bool final = 2;
 }
 
-message AgentDecideReply {
+message AgentActionReply {
   Action action = 1;
-
   repeated Feedback feedbacks = 2;
 }
 
