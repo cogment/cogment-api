@@ -44,6 +44,7 @@ service TrialLifecycle {
 
   // Expected headers: None
   rpc Version(VersionRequest) returns (VersionInfo) {}
+
 }
 
 // Encodes a request from a master to start a new trial.
@@ -60,9 +61,7 @@ message TrialStartReply {
   // This trial identifier is used to match requests to trials
   string trial_id = 1;
 
-  // One value per actor within the trial, representing the actor_class id of
-  // that actor.
-  repeated uint32 actor_class_idx = 6;
+  repeated TrialActor actors_in_trial = 3;
 }
 
 message TerminateTrialRequest {}
@@ -132,6 +131,10 @@ service ActorEndpoint {
   rpc GiveFeedback(TrialFeedbackRequest) returns (TrialFeedbackReply) {}
   
   rpc Version(VersionRequest) returns (VersionInfo) {}
+
+  rpc SendChanMessage(TrialMessageRequest) returns (TrialMessageReply) {}
+
+
 }
 
 // Encodes a request from a client instance to join an existing trial.
@@ -157,7 +160,12 @@ message TrialJoinReply {
 
   // The number of actors present in the trial.
   // There will be one entry per actor class.
-  repeated int32 actor_counts = 3;
+  // repeated int32 actor_counts = 3;
+
+  string trial_id = 4;
+
+  repeated TrialActor actors_in_trial = 5;
+
 }
 
 message TrialHeartbeatRequest {}
@@ -173,6 +181,7 @@ message TrialActionReply {
   Observation observation = 1;
   Reward reward = 2;
   bool trial_is_over = 3;
+  repeated Message messages = 4;
 }
 
 message TrialFeedbackRequest {
@@ -182,4 +191,11 @@ message TrialFeedbackRequest {
 
 message TrialFeedbackReply {
 
+}
+
+message TrialMessageRequest {
+  repeated Message messages = 2;
+}
+
+message TrialMessageReply {
 }

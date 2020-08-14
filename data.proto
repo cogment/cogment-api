@@ -32,13 +32,13 @@ message DatalogMsg {
 }
 
 message DatalogSample {
-  string trial_id = 1;
   string user_id = 5;
   
   ObservationSet observations = 2;
 
   repeated Action actions = 3;
   repeated Reward rewards = 4;
+  repeated MessageCollection messages = 6;
 }
 
 message LogReply {}

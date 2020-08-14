@@ -27,22 +27,31 @@ service AgentEndpoint {
 
   rpc End(AgentEndRequest) returns (AgentEndReply) {}
   rpc Reward(AgentRewardRequest) returns (AgentRewardReply) {}
+  rpc OnMessage(AgentOnMessageRequest) returns (AgentOnMessageReply) {}
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
 
 
+// Requests that a single agent be created.
+// expected metadata:
+//   trial-id: The id of the trial
+//   actor-id: The id of the actor within the trial
 message AgentStartRequest {
-  string actor_class = 1;
-  string impl_name = 2;
-  string name = 3;
+  // Name of the actor implementation to use.
+  // This can be useful if there are multiple actor implementations
+  // being served from the same service.
+  string impl_name = 1;
 
-  ActorConfig config = 4;
+  // Project-specific actor configuration. The content has to match the
+  // actor's class config_type.
+  ActorConfig config = 2;
 
-  TrialConfig trial_config = 5;
+  // Configuration of the trial itself.
+  TrialConfig trial_config = 3;
 
-  // One entry per actor, defining that actor's class
-  repeated int32 actor_class_idx = 6;
-  repeated string actor_names = 7;
+  // Actors present in the trial.
+  // actors_in_trial[metadata["actor-id"]] refers to the actor being created.
+  repeated TrialActor actors_in_trial = 4;
 }
 
 message AgentStartReply {}
@@ -60,6 +69,7 @@ message AgentDataRequest {
 message AgentActionReply {
   Action action = 1;
   repeated Feedback feedbacks = 2;
+  repeated Message messages = 3;
 }
 
 message Reward {
@@ -77,3 +87,15 @@ message AgentRewardRequest {
 }
 
 message AgentRewardReply {}
+
+message MessageCollection {
+  repeated Message messages = 1;
+}
+
+message AgentOnMessageRequest {
+  string trial_id = 1;
+  int32 actor_id = 2;
+  repeated Message messages = 3;
+}
+
+message AgentOnMessageReply {}

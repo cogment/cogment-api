@@ -20,22 +20,23 @@ import "cogment/api/common.proto";
 import "google/protobuf/timestamp.proto";
 
 // This is the connection between the orchestrator and the Env backend.
-// This service is hosted on the backend executable, and contacted by the 
+// This service is hosted on the backend executable, and contacted by the
 // orchestrator.
 service EnvironmentEndpoint {
-  rpc Start(EnvStartRequest) returns (EnvStartReply) {}
+  rpc Start(EnvStartRequest) returns (stream EnvStartReply) {}
   rpc End(EnvEndRequest) returns (EnvEndReply) {}
-  rpc Update(EnvUpdateRequest) returns (EnvUpdateReply) {}
+  rpc Update(stream EnvUpdateRequest) returns (stream EnvUpdateReply) {}
   rpc Version(VersionRequest) returns (VersionInfo) {}
+  rpc OnMessage(EnvOnMessageRequest) returns (EnvOnMessageReply) {}
 }
 
 
-// An observation set encodes the observations of ALL actors connected to 
+// An observation set encodes the observations of ALL actors connected to
 // an environment.
 message ObservationSet {
   uint64 tick_id = 1;
-  google.protobuf.Timestamp timestamp = 2;
-  
+  fixed64 timestamp = 2;
+
   repeated ObservationData observations = 3;
 
   // Maps actor ids to observations, It is assumed that actors are only
@@ -51,12 +52,17 @@ message ActionSet {
 
 // **************** START ***************** //
 message EnvStartRequest {
-  TrialConfig trial_config = 1;
+  // Name of the actor implementation to use.
+  // This can be useful if there are multiple actor implementations
+  // being served from the same service.
+  string impl_name = 1;
 
   EnvironmentConfig config = 2;
+  TrialConfig trial_config = 3;
 
-  // One entry per actor, defining that actor's class
-  repeated uint32 actor_class_idx = 3;
+  // Actors present in the trial.
+  // actors_in_trial[metadata["actor-id"]] refers to the actor being created.
+  repeated TrialActor actors_in_trial = 4;
 }
 
 message EnvStartReply {
@@ -85,4 +91,16 @@ message EnvUpdateReply {
   repeated Feedback feedbacks = 2;
 
   bool end_trial = 3;
+
+  repeated Message messages = 4;
+
 }
+
+
+message EnvOnMessageRequest {
+  string trial_id = 1;
+  int32 actor_id = 2;
+  repeated Message messages = 3;
+}
+
+message EnvOnMessageReply {}
