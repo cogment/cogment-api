@@ -1,0 +1,42 @@
+variables:
+    DATABASE_URL: "postgres://postgres@postgres/my_database"
+
+stages:
+    - deploy
+
+.use_gh_ssh_agent: &use_gh_ssh_agent
+    before_script:
+        ## _Inspired by https://docs.gitlab.com/ee/ci/ssh_keys/_
+        ##
+        ## Install ssh-agent if not already installed.
+        - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+        ## Run ssh-agent
+        - eval $(ssh-agent -s)
+        ## Add the private key file to ssh-agent
+        - echo "$GH_REPO_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+        ## Create the SSH directory and give it the right permissions
+        - mkdir -p ~/.ssh
+        - chmod 700 ~/.ssh
+        ## Using the set $SSH_KNOWN_HOSTS to be able to verify remote servers public keys
+        - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+        - chmod 644 ~/.ssh/known_hosts
+
+deploy_dry_run:
+    <<: *use_gh_ssh_agent
+    stage: deploy
+    script: ./scripts/publish.sh -v --dry-run
+
+deploy_latest:
+    <<: *use_gh_ssh_agent
+    stage: deploy
+    script: ./scripts/publish.sh -v
+    only:
+       - develop
+
+deploy_tags:
+    <<: *use_gh_ssh_agent
+    stage: deploy
+    script: ./scripts/publish.sh -v --version $CI_COMMIT_TAG
+    only:
+       - tags
+    
