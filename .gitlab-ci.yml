@@ -2,7 +2,24 @@ variables:
     DATABASE_URL: "postgres://postgres@postgres/my_database"
 
 stages:
+    - lint
     - deploy
+
+shellcheck:
+    image: koalaman/shellcheck-alpine:stable
+    stage: lint
+    before_script:
+        - shellcheck --version
+    script:
+        - shellcheck ./scripts/*.sh
+
+shfmt:
+    image: mvdan/shfmt:v3.1.0-alpine
+    stage: lint
+    before_script:
+        - shfmt -version
+    script:
+        - shfmt -i 2 -ci -d ./scripts
 
 .use_gh_ssh_agent: &use_gh_ssh_agent
     before_script:
@@ -39,4 +56,4 @@ deploy_tags:
     script: ./scripts/publish.sh -v --version $CI_COMMIT_TAG
     only:
        - tags
-    
+
