@@ -4,3 +4,6 @@ __pycache__
 
 # Artifacts publish intermediate directory
 /publish
+
+# Backup of "sed-ed" files
+*.bak
