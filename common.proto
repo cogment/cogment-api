@@ -16,7 +16,6 @@ syntax = "proto3";
 
 package cogment;
 
-import "google/protobuf/timestamp.proto";
 import "google/protobuf/any.proto";
 
 // **************** VERSIONING ***************** //
