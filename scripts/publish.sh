@@ -117,7 +117,7 @@ if [ ${verbose} == 1 ]; then
 fi
 eval "${GIT_PREPARE_COMMIT_CMD}"
 
-GIT_COMMIT_CMD="git commit -q -m\"Version \"$version\" published\"  > /dev/null"
+GIT_COMMIT_CMD="git commit -q -m\"Version '${version}' published\"  > /dev/null"
 if [ ${verbose} == 1 ]; then
   printf "Committing the release:\n  %s\n\n" "${GIT_COMMIT_CMD}"
 fi
@@ -125,7 +125,7 @@ fi
 ARTIFACT_URL="https://${GH_ORG}.github.io/${GH_REPO}/${version}/${artifact_filename}"
 
 set +o errexit
-if eval "${GIT_COMMIT_CMD}"; then
+if ! eval "${GIT_COMMIT_CMD}"; then
   printf "Nothing new to publish for version \"%s\".\n" "${version}"
   if [ ${dry_run} == 1 ]; then
     printf "DRY RUN SUCCESSFUL - Nothing published\n"
