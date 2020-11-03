@@ -50,10 +50,14 @@ message EnvironmentParams {
 }
 
 message ActorParams {
-  string actor_class = 1;
-  string endpoint = 2;
-  string name = 4;
-  ActorConfig config = 3;
+  string name = 1;
+  string actor_class = 2;
+  string endpoint = 3;  
+
+  // Specifies an implementation name to use. This is used to distinguish
+  // Between multiple implementations of the same actor class running on the same endpoint.
+  string implementation = 4;
+  ActorConfig config = 5;
 }
 
 message TrialParams {
