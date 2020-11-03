@@ -101,9 +101,9 @@ message ObservationData {
 // A single observation, as perceived by a single actor.
 message Observation {
   uint64 tick_id = 1;
-  google.protobuf.Timestamp timestamp = 2;
+  fixed64 timestamp = 2;
 
-  fixed64 data = 3;
+  ObservationData data = 3;
 }
 
 
