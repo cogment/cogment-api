@@ -100,7 +100,7 @@ message Observation {
   uint64 tick_id = 1;
   google.protobuf.Timestamp timestamp = 2;
 
-  ObservationData data = 3;
+  fixed64 data = 3;
 }
 
 
