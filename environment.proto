@@ -17,13 +17,12 @@ syntax = "proto3";
 package cogment;
 
 import "cogment/api/common.proto";
-import "google/protobuf/timestamp.proto";
 
 // This is the connection between the orchestrator and the Env backend.
 // This service is hosted on the backend executable, and contacted by the
 // orchestrator.
 service EnvironmentEndpoint {
-  rpc Start(EnvStartRequest) returns (stream EnvStartReply) {}
+  rpc Start(EnvStartRequest) returns (EnvStartReply) {}
   rpc End(EnvEndRequest) returns (EnvEndReply) {}
   rpc Update(stream EnvUpdateRequest) returns (stream EnvUpdateReply) {}
   rpc Version(VersionRequest) returns (VersionInfo) {}
