@@ -105,7 +105,7 @@ message TrialInfoReply {
 }
 
 
-// This service is used to behave as an actor within a trial.
+// This service is used to be an actor within a trial, using the "client" API.
 service ActorEndpoint {
   // Expected headers: None
   rpc JoinTrial(TrialJoinRequest) returns (TrialJoinReply) {}
@@ -114,11 +114,6 @@ service ActorEndpoint {
   // - trial-id
   // - actor-id
   rpc ActionStream(stream TrialActionRequest) returns (stream TrialActionReply) {}
-  
-  // Expected headers: 
-  // - trial-id
-  // - actor-id
-  rpc Action(TrialActionRequest) returns (TrialActionReply) {}
   
   // Expected headers: 
   // - trial-id
@@ -133,14 +128,12 @@ service ActorEndpoint {
   rpc Version(VersionRequest) returns (VersionInfo) {}
 
   rpc SendChanMessage(TrialMessageRequest) returns (TrialMessageReply) {}
-
-
 }
 
 // Encodes a request from a client instance to join an existing trial.
 message TrialJoinRequest {
   // This trial identifier is used to match requests to trials
-  // If left empty, 
+  // If left empty, then a random eligible trial will be selected,
   string trial_id = 1;
 
   // The actor_class we are joining as.
@@ -151,6 +144,20 @@ message TrialJoinRequest {
   int32 actor_id = 3;
 }
 
+message TrialJoinRequest {
+  // This trial identifier is used to match requests to trials
+  // If left empty, then a random eligible trial will be selected,
+  string trial_id = 1;
+
+  oneof slot_selection {
+    // Join at any available actor slot for that actor class
+    string actor_class = 2;
+
+    // Join at a specific actor_slot
+    int32 actor_id = 3;
+  }
+}
+
 message TrialJoinReply {
   // The actor class we have joined as.
   string actor_class = 1;
@@ -158,14 +165,11 @@ message TrialJoinReply {
   // The actor ID that was assigned to us.
   int32 actor_id = 2;
 
-  // The number of actors present in the trial.
-  // There will be one entry per actor class.
-  // repeated int32 actor_counts = 3;
+  // The trial we have joined.
+  string trial_id = 3;
 
-  string trial_id = 4;
-
-  repeated TrialActor actors_in_trial = 5;
-
+  // All the actors present in the trial.
+  repeated TrialActor actors_in_trial = 4;
 }
 
 message TrialHeartbeatRequest {}
@@ -173,14 +177,13 @@ message TrialHeartbeatRequest {}
 message TrialHeartbeatReply {}
 
 message TrialActionRequest {
-  // The action that is being taken.
   Action action = 1;
 }
 
 message TrialActionReply {
   Observation observation = 1;
-  Reward reward = 2;
-  bool trial_is_over = 3;
+  bool final = 2;
+  repeated Feedback feedbacks = 3;
   repeated Message messages = 4;
 }
 
