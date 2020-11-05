@@ -130,20 +130,6 @@ service ActorEndpoint {
   rpc SendChanMessage(TrialMessageRequest) returns (TrialMessageReply) {}
 }
 
-// Encodes a request from a client instance to join an existing trial.
-message TrialJoinRequest {
-  // This trial identifier is used to match requests to trials
-  // If left empty, then a random eligible trial will be selected,
-  string trial_id = 1;
-
-  // The actor_class we are joining as.
-  // If left empty, one will be picked.
-  string actor_class = 2;
-
-  // The actor ID we are joining as. If set to -1, a slot will be assigned/
-  int32 actor_id = 3;
-}
-
 message TrialJoinRequest {
   // This trial identifier is used to match requests to trials
   // If left empty, then a random eligible trial will be selected,
