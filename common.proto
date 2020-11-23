@@ -121,13 +121,13 @@ message Feedback {
   float value = 3;
   float confidence = 4;
 
-  // Must match the type in the config's actor_classes->[i]->feedback_info
-  bytes content = 5;
+  google.protobuf.Any user_data = 5;
 }
 
 // **************** MESSAGES ****************** //
 message Message {
-  int32 sender_id = 1;
-  int32 receiver_id = 2;
-  google.protobuf.Any payload = 3;
+  int32 tick_id = 1;
+  int32 sender_id = 2;
+  int32 receiver_id = 3;
+  google.protobuf.Any payload = 4;
 }

@@ -23,6 +23,7 @@ import "cogment/api/message.proto";
 
 // This service is used to manage Trial lifecycle.
 service TrialLifecycle {
+
   // Begin a new trial.
   // Expected headers: None
   rpc StartTrial(TrialStartRequest) returns (TrialStartReply) {}
@@ -40,7 +41,7 @@ service TrialLifecycle {
   // Get extra information about a specific trial.
   // Expected headers: 
   // - trial-id <optional>
-  rpc TrialInfo(TrialInfoRequest) returns (TrialInfoReply) {}
+  rpc GetTrialInfo(TrialInfoRequest) returns (TrialInfoReply) {}
 
   // Expected headers: None
   rpc Version(VersionRequest) returns (VersionInfo) {}
@@ -61,22 +62,11 @@ message TrialStartReply {
   // This trial identifier is used to match requests to trials
   string trial_id = 1;
 
-  repeated TrialActor actors_in_trial = 3;
+  repeated TrialActor actors_in_trial = 2;
 }
 
 message TerminateTrialRequest {}
 message TerminateTrialReply {}
-
-message MasterMessageDispatchRequest {
-  // Send the message to these actors
-  repeated uint32 send_to_actor = 1;
-
-  // Wether or not to send the message to the environment
-  bool send_to_env = 2;
-
-  // TBD
-}
-
 
 message TrialInfoRequest {
   // Request that the latest observations for that trial be provided.
@@ -105,8 +95,9 @@ message TrialInfoReply {
 }
 
 
-// This service is used to be an actor within a trial, using the "client" API.
+// This service is used by an actor within a trial, using the "client" API.
 service ActorEndpoint {
+
   // Expected headers: None
   rpc JoinTrial(TrialJoinRequest) returns (TrialJoinReply) {}
 
@@ -124,15 +115,17 @@ service ActorEndpoint {
   // - trial-id
   // - actor-id
   rpc GiveFeedback(TrialFeedbackRequest) returns (TrialFeedbackReply) {}
-  
-  rpc Version(VersionRequest) returns (VersionInfo) {}
 
-  rpc SendChanMessage(TrialMessageRequest) returns (TrialMessageReply) {}
+  // Expected headers: 
+  // - trial-id
+  rpc SendMessage(TrialMessageRequest) returns (TrialMessageReply) {}
+  
+  // Expected headers: None
+  rpc Version(VersionRequest) returns (VersionInfo) {}
 }
 
 message TrialJoinRequest {
   // This trial identifier is used to match requests to trials
-  // If left empty, then a random eligible trial will be selected,
   string trial_id = 1;
 
   oneof slot_selection {
@@ -167,24 +160,18 @@ message TrialActionRequest {
 }
 
 message TrialActionReply {
-  Observation observation = 1;
-  bool final = 2;
-  repeated Feedback feedbacks = 3;
-  repeated Message messages = 4;
+  AgentPeriodData data = 1;
+  bool final_data = 2;
 }
 
 message TrialFeedbackRequest {
-  // Reward information about previous states
-  repeated Feedback feedbacks = 2;
+  repeated Feedback feedbacks = 1;
 }
 
-message TrialFeedbackReply {
-
-}
+message TrialFeedbackReply {}
 
 message TrialMessageRequest {
-  repeated Message messages = 2;
+  repeated Message messages = 1;
 }
 
-message TrialMessageReply {
-}
+message TrialMessageReply {}

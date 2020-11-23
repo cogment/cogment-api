@@ -21,12 +21,17 @@ import "cogment/api/common.proto";
 // This is the connection between the orchestrator and the Env backend.
 // This service is hosted on the backend executable, and contacted by the
 // orchestrator.
+// Expected metadata for all calls except `Version`:
+//   - trial-id: The id of the trial
 service EnvironmentEndpoint {
-  rpc Start(EnvStartRequest) returns (EnvStartReply) {}
-  rpc End(EnvEndRequest) returns (EnvEndReply) {}
-  rpc Update(stream EnvUpdateRequest) returns (stream EnvUpdateReply) {}
+  rpc OnStart(EnvStartRequest) returns (EnvStartReply) {}
+
+  rpc OnAction(stream EnvActionRequest) returns (stream EnvActionReply) {}
+  rpc OnMessage(EnvMessageRequest) returns (EnvMessageReply) {}
+
+  rpc OnEnd(EnvActionRequest) returns (EnvActionReply) {}
+
   rpc Version(VersionRequest) returns (VersionInfo) {}
-  rpc OnMessage(EnvOnMessageRequest) returns (EnvOnMessageReply) {}
 }
 
 
@@ -43,7 +48,7 @@ message ObservationSet {
   repeated int32 actors_map = 4;
 }
 
-// One action per actot within the environment
+// One action per actor within the environment
 message ActionSet {
   // Must match the type in the config's actor_classes->[i]->action_space
   repeated bytes actions = 1;
@@ -68,38 +73,27 @@ message EnvStartReply {
   ObservationSet observation_set = 1;
 }
 
-// **************** END ***************** //
-message EnvEndRequest {}
-
-message EnvEndReply {}
-
 // **************** UPDATE ***************** //
-message EnvUpdateRequest {
-  string trial_id = 1;
-
-  ActionSet action_set = 2;
+message EnvActionRequest {
+  ActionSet action_set = 1;
 
   // Prevent the creation of Observation Deltas
-  bool reply_with_snapshot = 3;
+  bool reply_with_snapshot = 2;
 }
 
-message EnvUpdateReply {
+message EnvActionReply {
   ObservationSet observation_set = 1;
 
-  // Reward information about previous states
-  repeated Feedback feedbacks = 2;
-
-  bool end_trial = 3;
-
-  repeated Message messages = 4;
-
-}
-
-
-message EnvOnMessageRequest {
-  string trial_id = 1;
-  int32 actor_id = 2;
+  repeated Feedback feedbacks = 2;  // Feedback accumulated so far
   repeated Message messages = 3;
+
+  bool final_update = 4;  // This should normally end the trial
 }
 
-message EnvOnMessageReply {}
+// **************** MESSAGE ***************** //
+message EnvMessageRequest {
+  int32 actor_id = 1;
+  repeated Message messages = 2;
+}
+
+message EnvMessageReply {}

@@ -20,11 +20,13 @@ import "cogment/api/common.proto";
 import "cogment/api/agent.proto";
 import "cogment/api/environment.proto";
 
+// Expected headers: None
 service LogExporter {
-  rpc Log(stream DatalogMsg) returns (LogReply) {}
+  rpc OnLogSample(stream LogExporterSampleRequest) returns (LogExporterSampleReply) {}
+  rpc Version(VersionRequest) returns (VersionInfo) {}
 }
 
-message DatalogMsg {
+message LogExporterSampleRequest {
   oneof msg {
     TrialParams trial_params = 1;
     DatalogSample sample = 2;
@@ -32,13 +34,12 @@ message DatalogMsg {
 }
 
 message DatalogSample {
-  string user_id = 5;
+  string user_id = 1;
   
   ObservationSet observations = 2;
-
   repeated Action actions = 3;
   repeated Reward rewards = 4;
-  repeated MessageCollection messages = 6;
+  repeated Message messages = 5;
 }
 
-message LogReply {}
+message LogExporterSampleReply {}
