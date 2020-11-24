@@ -103,17 +103,17 @@ service ActorEndpoint {
 
   // Expected headers: 
   // - trial-id
-  // - actor-id
+  // - actor-name
   rpc ActionStream(stream TrialActionRequest) returns (stream TrialActionReply) {}
   
   // Expected headers: 
   // - trial-id
-  // - actor-id
+  // - actor-name
   rpc Heartbeat(TrialHeartbeatRequest) returns (TrialHeartbeatReply) {}
 
   // Expected headers: 
   // - trial-id
-  // - actor-id
+  // - actor-name
   rpc GiveFeedback(TrialFeedbackRequest) returns (TrialFeedbackReply) {}
 
   // Expected headers: 
@@ -133,7 +133,7 @@ message TrialJoinRequest {
     string actor_class = 2;
 
     // Join at a specific actor_slot
-    int32 actor_id = 3;
+    string actor_name = 3;
   }
 }
 
@@ -141,8 +141,8 @@ message TrialJoinReply {
   // The actor class we have joined as.
   string actor_class = 1;
 
-  // The actor ID that was assigned to us.
-  int32 actor_id = 2;
+  // The actor name that was assigned to us.
+  string actor_name = 2;
 
   // The trial we have joined.
   string trial_id = 3;

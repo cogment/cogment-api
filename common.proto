@@ -85,7 +85,7 @@ message TrialActor {
   // an entry in the project's cogment.yaml
   string actor_class = 1;
 
-  // <optional> The name of the actor.
+  // The name of the actor.
   string name = 2;
 }
 
@@ -115,7 +115,7 @@ message Action {
 
 // **************** FEEDBACK ***************** //
 message Feedback {
-  uint32 actor_id = 1;
+  string actor_name = 1;
   int32 tick_id = 2;
 
   float value = 3;
@@ -127,7 +127,7 @@ message Feedback {
 // **************** MESSAGES ****************** //
 message Message {
   int32 tick_id = 1;
-  int32 sender_id = 2;
-  int32 receiver_id = 3;
+  string sender_name = 2;
+  string receiver_name = 3;
   google.protobuf.Any payload = 4;
 }

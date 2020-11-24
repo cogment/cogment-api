@@ -22,7 +22,7 @@ import "cogment/api/common.proto";
 // The service is hosted on the model.
 // Expected metadata for all calls except `Version`:
 //   - trial-id: The id of the trial
-//   - actor-id: The id of the actor within the trial
+//   - actor-name: The name of the actor within the trial
 service AgentEndpoint {
 
   rpc OnStart(AgentStartRequest) returns (AgentStartReply) {}
@@ -38,6 +38,7 @@ service AgentEndpoint {
 
 
 // Requests that a single agent be created.
+// (metadata["actor-name"] is the new actor)
 message AgentStartRequest {
   // Name of the actor implementation to use.
   // This can be useful if there are multiple actor implementations
@@ -51,8 +52,7 @@ message AgentStartRequest {
   // Configuration of the trial itself.
   TrialConfig trial_config = 3;
 
-  // Actors present in the trial.
-  // actors_in_trial[metadata["actor-id"]] refers to the actor being created.
+  // Actors present in the trial (inclusive of the new actor).
   repeated TrialActor actors_in_trial = 4;
 }
 

@@ -43,8 +43,11 @@ message ObservationSet {
 
   repeated ObservationData observations = 3;
 
-  // Maps actor ids to observations, It is assumed that actors are only
-  // ever assigned observations that are members of their observation space.
+  // Maps actors to observations.  This list has the same number and order
+  // of items as the EnvActionRequest.actors_in_trial received on start.
+  // The values are indexes into the `observations` list.
+  // It is assumed that actors are only ever assigned observations that are
+  // members of their observation space.
   repeated int32 actors_map = 4;
 }
 
@@ -65,7 +68,6 @@ message EnvStartRequest {
   TrialConfig trial_config = 3;
 
   // Actors present in the trial.
-  // actors_in_trial[metadata["actor-id"]] refers to the actor being created.
   repeated TrialActor actors_in_trial = 4;
 }
 
@@ -92,7 +94,7 @@ message EnvActionReply {
 
 // **************** MESSAGE ***************** //
 message EnvMessageRequest {
-  int32 actor_id = 1;
+  string actor_name = 1;
   repeated Message messages = 2;
 }
 
