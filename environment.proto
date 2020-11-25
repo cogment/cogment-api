@@ -59,16 +59,17 @@ message ActionSet {
 
 // **************** START ***************** //
 message EnvStartRequest {
-  // Name of the actor implementation to use.
-  // This can be useful if there are multiple actor implementations
+  // Name of the environment implementation to use.
+  // This can be useful if there are multiple environment implementations
   // being served from the same service.
   string impl_name = 1;
 
+  // Project-specific environment configuration. The content has to match the
+  // environment's config_type.
   EnvironmentConfig config = 2;
-  TrialConfig trial_config = 3;
 
   // Actors present in the trial.
-  repeated TrialActor actors_in_trial = 4;
+  repeated TrialActor actors_in_trial = 3;
 }
 
 message EnvStartReply {

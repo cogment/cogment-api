@@ -38,7 +38,6 @@ service AgentEndpoint {
 
 
 // Requests that a single agent be created.
-// (metadata["actor-name"] is the new actor)
 message AgentStartRequest {
   // Name of the actor implementation to use.
   // This can be useful if there are multiple actor implementations
@@ -49,11 +48,8 @@ message AgentStartRequest {
   // actor's class config_type.
   ActorConfig config = 2;
 
-  // Configuration of the trial itself.
-  TrialConfig trial_config = 3;
-
   // Actors present in the trial (inclusive of the new actor).
-  repeated TrialActor actors_in_trial = 4;
+  repeated TrialActor actors_in_trial = 3;
 }
 
 message AgentStartReply {}

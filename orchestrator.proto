@@ -138,14 +138,15 @@ message TrialJoinRequest {
 }
 
 message TrialJoinReply {
-  // The actor class we have joined as.
-  string actor_class = 1;
-
   // The actor name that was assigned to us.
-  string actor_name = 2;
+  string actor_name = 1;
 
   // The trial we have joined.
-  string trial_id = 3;
+  string trial_id = 2;
+
+  // Project-specific actor configuration. The content has to match the
+  // actor's class config_type.
+  ActorConfig config = 3;
 
   // All the actors present in the trial.
   repeated TrialActor actors_in_trial = 4;
