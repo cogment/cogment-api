@@ -2,8 +2,14 @@ variables:
     DATABASE_URL: "postgres://postgres@postgres/my_database"
 
 stages:
-    - lint
-    - deploy
+  - lint
+  - deploy
+
+apache_licenses_check:
+  stage: lint
+  image: registry.gitlab.com/ai-r/apache-license-checker:latest
+  script:
+    - apache-license-checker
 
 shellcheck:
     image: koalaman/shellcheck-alpine:stable
