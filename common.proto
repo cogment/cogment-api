@@ -47,6 +47,7 @@ message EnvironmentConfig {
 message EnvironmentParams {
   string endpoint = 1;
   EnvironmentConfig config = 2;
+  string implementation = 3;
 }
 
 message ActorParams {
