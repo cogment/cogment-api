@@ -1,5 +1,9 @@
 # cogment-api
 
+> ⚠️ 🚧 This is part of an upcoming release of cogment and still unstable.
+>
+> Current stable version can be found at <https://gitlab.com/cogment/cogment>
+
 ## Introduction
 
 The Cogment framework is a high-efficiency, open source framework designed to enable the training of models in environments where humans and agents interact with the environment and each other continuously. It’s capable of distributed, multi-agent, multi-model training.
