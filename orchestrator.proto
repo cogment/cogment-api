@@ -19,7 +19,6 @@ package cogment;
 import "cogment/api/common.proto";
 import "cogment/api/agent.proto";
 import "cogment/api/environment.proto";
-import "cogment/api/message.proto";
 
 // This service is used to manage Trial lifecycle.
 service TrialLifecycle {
@@ -32,11 +31,6 @@ service TrialLifecycle {
   // Expected headers: 
   // - trial-id
   rpc TerminateTrial(TerminateTrialRequest) returns (TerminateTrialReply) {}
-
-  // Broadcast a message to the members of a trial.
-  // Expected headers: 
-  // - trial-id
-  rpc SendMessage(MasterMessageDispatchRequest) returns (MessageDispatchReply) {}
 
   // Get extra information about a specific trial.
   // Expected headers: 
