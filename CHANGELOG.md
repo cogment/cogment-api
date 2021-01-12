@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## v1.0.0-alpha4 - 2021-01-12
+
 ### Removed
 
 - Remove remaining traces of the legacy SendMessage method and associated types.
