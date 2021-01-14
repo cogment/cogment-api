@@ -112,6 +112,7 @@ service ActorEndpoint {
 
   // Expected headers: 
   // - trial-id
+  // - actor-name
   rpc SendMessage(TrialMessageRequest) returns (TrialMessageReply) {}
   
   // Expected headers: None
@@ -147,7 +148,6 @@ message TrialJoinReply {
 }
 
 message TrialHeartbeatRequest {}
-
 message TrialHeartbeatReply {}
 
 message TrialActionRequest {
