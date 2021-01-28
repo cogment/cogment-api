@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Removed
+
+- Remove unused `actor_name` from `EnvMessageRequest`
+
 ## v1.0.0-alpha4 - 2021-01-12
 
 ### Removed
