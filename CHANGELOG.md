@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Changed
+
+- Filename changed from "data.proto" to "datalog.proto" to remove confusion with default user data file
+
 ## v1.0.0-alpha5 - 2021-01-28
 
 ### Removed
