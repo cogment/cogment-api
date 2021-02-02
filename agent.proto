@@ -64,14 +64,6 @@ message AgentActionReply {
   repeated Message messages = 3;
 }
 
-message Reward {
-  float value = 1;
-  float confidence = 2;
-
-  // The individual feedbacks that were used to generate the reward.
-  repeated Feedback feedbacks = 3;
-}
-
 message AgentRewardRequest {
   int32 tick_id = 1;  // This is a bit redundant but it simplifies processing
   Reward reward = 2;
@@ -85,14 +77,8 @@ message AgentMessageRequest {
 
 message AgentMessageReply {};
 
-message AgentPeriodData {
-  repeated Observation observations = 1;
-  repeated Reward rewards = 2;
-  repeated Message messages = 3;
-}
-
 message AgentEndRequest {
-  AgentPeriodData final_data = 1;
+  ActorPeriodData final_data = 1;
 }
 
 message AgentEndReply {}

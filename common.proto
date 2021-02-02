@@ -107,7 +107,6 @@ message Observation {
   ObservationData data = 3;
 }
 
-
 // **************** ACTIONS ***************** //
 message Action {
   // Must match the type in the config's actor_classes->[i]->action_space
@@ -125,10 +124,25 @@ message Feedback {
   google.protobuf.Any user_data = 5;
 }
 
+message Reward {
+  float value = 1;
+  float confidence = 2;
+
+  // The individual feedbacks that were used to generate the reward.
+  repeated Feedback feedbacks = 3;
+}
+
 // **************** MESSAGES ****************** //
 message Message {
   int32 tick_id = 1;
   string sender_name = 2;
   string receiver_name = 3;
   google.protobuf.Any payload = 4;
+}
+
+// **************** ACTORS ****************** //
+message ActorPeriodData {
+  repeated Observation observations = 1;
+  repeated Reward rewards = 2;
+  repeated Message messages = 3;
 }

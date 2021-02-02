@@ -90,7 +90,7 @@ message TrialInfoReply {
 
 
 // This service is used by an actor within a trial, using the "client" API.
-service ActorEndpoint {
+service ClientActor {
 
   // Expected headers: None
   rpc JoinTrial(TrialJoinRequest) returns (TrialJoinReply) {}
@@ -155,7 +155,7 @@ message TrialActionRequest {
 }
 
 message TrialActionReply {
-  AgentPeriodData data = 1;
+  ActorPeriodData data = 1;
   bool final_data = 2;
 }
 
