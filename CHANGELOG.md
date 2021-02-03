@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Filename changed from "data.proto" to "datalog.proto" to remove confusion with default user data file
+- Rename ActorEndpoint and AgentPeriodData
+- Refactor Reward and Feedback structure
 
 ## v1.0.0-alpha5 - 2021-01-28
 

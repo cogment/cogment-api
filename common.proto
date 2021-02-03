@@ -113,23 +113,22 @@ message Action {
   bytes content = 1;
 }
 
-// **************** FEEDBACK ***************** //
-message Feedback {
-  string actor_name = 1;
-  int32 tick_id = 2;
-
-  float value = 3;
-  float confidence = 4;
-
-  google.protobuf.Any user_data = 5;
+// **************** REWARDS ***************** //
+message RewardSource {
+  string sender_name = 1;  // Not needed when sending a reward
+  float value = 2;
+  float confidence = 3;
+  google.protobuf.Any user_data = 4;
 }
 
 message Reward {
-  float value = 1;
-  float confidence = 2;
+  string receiver_name = 1;
+  int32 tick_id = 2;
+  float value = 3;
 
-  // The individual feedbacks that were used to generate the reward.
-  repeated Feedback feedbacks = 3;
+  // The individual rewards that were used to generate this aggregate reward.
+  // There must be at least one.
+  repeated RewardSource sources = 4;
 }
 
 // **************** MESSAGES ****************** //

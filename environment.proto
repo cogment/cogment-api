@@ -87,7 +87,7 @@ message EnvActionRequest {
 message EnvActionReply {
   ObservationSet observation_set = 1;
 
-  repeated Feedback feedbacks = 2;  // Feedback accumulated so far
+  repeated Rewards rewards = 2;
   repeated Message messages = 3;
 
   bool final_update = 4;  // This should normally end the trial

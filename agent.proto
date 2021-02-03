@@ -60,13 +60,12 @@ message AgentObservationRequest {
 
 message AgentActionReply {
   Action action = 1;
-  repeated Feedback feedbacks = 2;
+  repeated Reward rewards = 2;
   repeated Message messages = 3;
 }
 
 message AgentRewardRequest {
-  int32 tick_id = 1;  // This is a bit redundant but it simplifies processing
-  Reward reward = 2;
+  Reward reward = 1;
 }
 
 message AgentRewardReply {}

@@ -108,7 +108,7 @@ service ClientActor {
   // Expected headers: 
   // - trial-id
   // - actor-name
-  rpc GiveFeedback(TrialFeedbackRequest) returns (TrialFeedbackReply) {}
+  rpc SendReward(TrialRewardRequest) returns (TrialRewardReply) {}
 
   // Expected headers: 
   // - trial-id
@@ -159,11 +159,11 @@ message TrialActionReply {
   bool final_data = 2;
 }
 
-message TrialFeedbackRequest {
-  repeated Feedback feedbacks = 1;
+message TrialRewardRequest {
+  repeated Reward rewards = 1;
 }
 
-message TrialFeedbackReply {}
+message TrialRewardReply {}
 
 message TrialMessageRequest {
   repeated Message messages = 1;
