@@ -17,7 +17,6 @@ syntax = "proto3";
 package cogment;
 
 import "cogment/api/common.proto";
-import "cogment/api/agent.proto";
 import "cogment/api/environment.proto";
 
 // Expected headers: None
