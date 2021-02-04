@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Filename changed from "data.proto" to "datalog.proto" to remove confusion with default user data file
 - Rename ActorEndpoint and AgentPeriodData
 - Refactor Reward and Feedback structure
+- New method: `WatchTrials()`, that allows to monitor trial status updates.
 
 ## v1.0.0-alpha5 - 2021-01-28
 

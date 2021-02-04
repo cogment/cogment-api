@@ -37,6 +37,13 @@ service TrialLifecycle {
   // - trial-id <optional>
   rpc GetTrialInfo(TrialInfoRequest) returns (TrialInfoReply) {}
 
+  
+  // Get information about the trials currently running in the orchestrator.
+  // The stream will be prefixed by all the currently filtered existing trials,
+  // and will return a new message whenever a trial enters a filtered state.
+  // Expected headers: None
+  rpc WatchTrials(TrialListRequest) returns (stream TrialListEntry) {}
+
   // Expected headers: None
   rpc Version(VersionRequest) returns (VersionInfo) {}
 
@@ -88,6 +95,16 @@ message TrialInfoReply {
   repeated TrialInfo trial = 1;
 }
 
+message TrialListRequest {
+  // Only return trials that are in the specified states.
+  // If empty, every single trial will be returned.
+  repeated TrialState filter = 1;
+}
+
+message TrialListEntry {
+  string trial_id = 1;
+  TrialState state = 2;
+}
 
 // This service is used by an actor within a trial, using the "client" API.
 service ClientActor {
