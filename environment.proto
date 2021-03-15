@@ -55,6 +55,8 @@ message ObservationSet {
 message ActionSet {
   // Must match the type in the config's actor_classes->[i]->action_space
   repeated bytes actions = 1;
+
+  uint64 tick_id = 2;
 }
 
 // **************** START ***************** //
@@ -70,6 +72,9 @@ message EnvStartRequest {
 
   // Actors present in the trial.
   repeated TrialActor actors_in_trial = 3;
+
+  // Initial tick id
+  uint64 tick_id = 4;
 }
 
 message EnvStartReply {
@@ -90,7 +95,8 @@ message EnvActionReply {
   repeated Reward rewards = 2;
   repeated Message messages = 3;
 
-  bool final_update = 4;  // This should normally end the trial
+  // If set to True, it will end the trial
+  bool final_update = 4;
 }
 
 // **************** MESSAGE ***************** //

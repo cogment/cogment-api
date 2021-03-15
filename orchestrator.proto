@@ -71,6 +71,9 @@ message TerminateTrialReply {}
 message TrialInfoRequest {
   // Request that the latest observations for that trial be provided.
   bool get_latest_observation = 1;
+
+  // Request full list of active actors in the trial
+  bool get_actor_list = 2;
 }
 
 enum TrialState {
@@ -85,9 +88,14 @@ enum TrialState {
 message TrialInfo {
   string trial_id = 1;
   TrialState state = 2;
+  uint64 tick_id = 3;
+  fixed64 trial_duration = 4;  // In nanoseconds
 
-  // Only present if get_latest_observation is specified in the request.
-  ObservationSet latest_observation = 3;
+  // Only present if requested
+  ObservationSet latest_observation = 5;
+
+  // Empty if not requested
+  repeated TrialActor actors_in_trial = 6;
 }
 
 message TrialInfoReply {
