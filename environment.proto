@@ -38,7 +38,7 @@ service EnvironmentEndpoint {
 // An observation set encodes the observations of ALL actors connected to
 // an environment.
 message ObservationSet {
-  uint64 tick_id = 1;
+  sint64 tick_id = 1;
   fixed64 timestamp = 2;
 
   repeated ObservationData observations = 3;

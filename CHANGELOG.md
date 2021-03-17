@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+
+- Addition of `tick_id` in critical places
+- Addition of functionality to `GetTrialInfo`
+
 ## v1.0.0-alpha6 - 2021-02-17
 
 ## v1.0.0-alpha6 - 2021-02-17
