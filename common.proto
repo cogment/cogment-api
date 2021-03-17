@@ -112,7 +112,7 @@ message Action {
   // Must match the type in the config's actor_classes->[i]->action_space
   bytes content = 1;
 
-  uint64 tick_id = 2;
+  sint64 tick_id = 2;
 }
 
 // **************** REWARDS ***************** //
