@@ -19,9 +19,10 @@ package cogment;
 import "cogment/api/common.proto";
 import "cogment/api/environment.proto";
 
-// Expected headers: None
+// Expected headers:
+// - trial-id
 service LogExporter {
-  rpc OnLogSample(stream LogExporterSampleRequest) returns (LogExporterSampleReply) {}
+  rpc OnLogSample(stream LogExporterSampleRequest) returns (stream LogExporterSampleReply) {}
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
 
