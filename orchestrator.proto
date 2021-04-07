@@ -76,15 +76,6 @@ message TrialInfoRequest {
   bool get_actor_list = 2;
 }
 
-enum TrialState {
-  UNKNOWN = 0;
-  INITIALIZING = 1;
-  PENDING = 2;
-  RUNNING = 3;
-  TERMINATING = 4;
-  ENDED = 5;
-}
-
 message TrialInfo {
   string trial_id = 1;
   TrialState state = 2;

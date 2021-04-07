@@ -19,10 +19,12 @@ package cogment;
 import "cogment/api/common.proto";
 import "cogment/api/environment.proto";
 
-// Expected headers:
-// - trial-id
 service LogExporter {
+  // Expected headers:
+  // - trial-id
   rpc OnLogSample(stream LogExporterSampleRequest) returns (stream LogExporterSampleReply) {}
+
+  // Expected headers: None
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
 
@@ -33,13 +35,22 @@ message LogExporterSampleRequest {
   }
 }
 
+// Dynamic trial data not found in other incoming messages
+message TrialData {
+  uint64 tick_id = 1;
+  fixed64 timestamp = 2;
+  TrialState state = 3;
+}
+
 message DatalogSample {
   string user_id = 1;
   
-  ObservationSet observations = 2;
-  repeated Action actions = 3;
-  repeated Reward rewards = 4;
-  repeated Message messages = 5;
+  ObservationSet observations = 2;  // Incoming observation from environment
+  repeated Action actions = 3;      // Incoming actions from actors
+  repeated Reward rewards = 4;      // Incoming rewards from environment and actors
+  repeated Message messages = 5;    // Incoming messages from environment and actors
+
+  TrialData trial_data = 6;         // Internal trial data
 }
 
 message LogExporterSampleReply {}

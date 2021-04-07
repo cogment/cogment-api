@@ -147,3 +147,13 @@ message ActorPeriodData {
   repeated Reward rewards = 2;
   repeated Message messages = 3;
 }
+
+// **************** OTHER ****************** //
+enum TrialState {
+  UNKNOWN = 0;
+  INITIALIZING = 1;
+  PENDING = 2;
+  RUNNING = 3;
+  TERMINATING = 4;
+  ENDED = 5;
+}
