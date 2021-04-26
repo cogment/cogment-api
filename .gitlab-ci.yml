@@ -1,6 +1,6 @@
 stages:
   - lint
-  - deploy
+  - publish
 
 apache_licenses_check:
   stage: lint
@@ -17,19 +17,19 @@ shellcheck:
     - shellcheck ./scripts/*.sh
 
 shfmt:
-    image: mvdan/shfmt:v3.1.0-alpine
-    stage: lint
-    before_script:
-        - shfmt -version
-    script:
-        - shfmt -i 2 -ci -d ./scripts
+  image: mvdan/shfmt:v3.1.0-alpine
+  stage: lint
+  before_script:
+    - shfmt -version
+  script:
+    - shfmt -i 2 -ci -d ./scripts
 
 .base_gh_ssh_agent:
   before_script:
     ## _Inspired by https://docs.gitlab.com/ee/ci/ssh_keys/_
     ##
     ## Install ssh-agent if not already installed.
-    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
     ## Run ssh-agent
     - eval $(ssh-agent -s)
     ## Add the private key file to ssh-agent
@@ -41,22 +41,32 @@ shfmt:
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
 
-deploy_dry_run:
+publish_dry_run:
   extends: .base_gh_ssh_agent
-  stage: deploy
+  stage: publish
   script: ./scripts/publish.sh -v --dry-run
 
-deploy_latest:
+publish_latest:
   extends: .base_gh_ssh_agent
-  stage: deploy
+  stage: publish
   script: ./scripts/publish.sh -v
   only:
-      - develop
+    - develop
 
-deploy_tags:
+publish_tags:
   extends: .base_gh_ssh_agent
-  stage: deploy
+  stage: publish
   script: ./scripts/publish.sh -v --version $CI_COMMIT_TAG
   only:
-      - tags
+    - /^v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+(?:-[[:alnum:]]+)?$/
 
+publish_branch_to_github:
+  extends: .base_gh_ssh_agent
+  stage: publish
+  script:
+    - git checkout ${CI_COMMIT_BRANCH} # Checkout the branch not the sha1
+    - git remote add downstream git@github.com:cogment/cogment-api.git
+    - git fetch downstream ${CI_COMMIT_BRANCH}
+    - git push --tags downstream ${CI_COMMIT_BRANCH}:${CI_COMMIT_BRANCH}
+  only:
+    - main
