@@ -1,17 +1,11 @@
 # cogment-api
 
-> ⚠️ 🚧 This is part of an upcoming release of cogment and still unstable.
->
-> Current stable version can be found at <https://gitlab.com/cogment/cogment>
+[![Apache 2 License](https://img.shields.io/badge/license-Apache%202-green)](./LICENSE) [![Changelog](https://img.shields.io/badge/-Changelog%20-blueviolet)](./CHANGELOG.md)
 
-## Introduction
+[Cogment](https://cogment.ai) is an innovative open source AI platform designed to leverage the advent of AI to benefit humankind through human-AI collaboration developed by [AI Redefined](https://ai-r.com). Cogment enables AI researchers and engineers to build, train and operate AI agents in simulated or real environments shared with humans. For the full user documentation visit <https://docs.cogment.ai>
 
-The Cogment framework is a high-efficiency, open source framework designed to enable the training of models in environments where humans and agents interact with the environment and each other continuously. It’s capable of distributed, multi-agent, multi-model training.
-
-This is the API definition from cogment. This repository is meant to be included within dependant projects.
-
-For further Cogment information, check out the documentation at <https://docs.cogment.ai>
+This module, `cogment-api`, is the [gRPC API](https://docs.cogment.ai/cogment/cogment-low-level-api-guide/grpc/) definition for Cogment.
 
 ## Developers
 
-The Cogment framework API is implemented using [gRPC](https://grpc.github.io/) services.  gRPC automatically generates idiomatic client and server stubs in a plethora of programming languages using protocol buffers.  The protocol buffer data nd associated language defines the gRPC service and method request and response types in `.proto` files.  The cogment api is composed of a set of `.proto` files within which the communication between the Cogment framework services are defined.
+The Cogment framework API is implemented using [gRPC](https://grpc.github.io/) services. gRPC automatically generates idiomatic client and server stubs in a plethora of programming languages using protocol buffers. The protocol buffer data nd associated language defines the gRPC service and method request and response types in `.proto` files. The cogment api is composed of a set of `.proto` files within which the communication between the Cogment framework services are defined.
