@@ -4,6 +4,9 @@
 # Github pages release script
 ####
 
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/commons.sh"
+
 # Base settings
 GH_ORG="cogment"
 GH_REPO="cogment-api"
@@ -17,16 +20,6 @@ INCLUDE=(
   "./README.md"
 )
 ARTIFACT_BASENAME="cogment-api"
-
-# Utility functions
-## join_by "-delimiter-" "a" "b" "c" => "a-delimiter-b-delimiter-c"
-function join_by() {
-  local delimiter=$1
-  shift
-  local strings=$1
-  shift
-  printf %s "$strings" "${@/#/$delimiter}"
-}
 
 function usage() {
   local usage_str=""

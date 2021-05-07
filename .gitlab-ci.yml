@@ -41,22 +41,22 @@ shfmt:
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
 
-publish_dry_run:
+publish_package_dry_run:
   extends: .base_gh_ssh_agent
   stage: publish
-  script: ./scripts/publish.sh -v --dry-run
+  script: ./scripts/publish_to_gh_pages.sh -v --dry-run
 
-publish_latest:
+publish_package_latest:
   extends: .base_gh_ssh_agent
   stage: publish
-  script: ./scripts/publish.sh -v
+  script: ./scripts/publish_to_gh_pages.sh -v
   only:
     - develop
 
-publish_tags:
+publish_package_tags:
   extends: .base_gh_ssh_agent
   stage: publish
-  script: ./scripts/publish.sh -v --version $CI_COMMIT_TAG
+  script: ./scripts/publish_to_gh_pages.sh -v --version $CI_COMMIT_TAG
   only:
     - /^v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+(?:-[[:alnum:]]+)?$/
 
