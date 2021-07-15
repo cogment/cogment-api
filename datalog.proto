@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package cogment;
+package cogmentAPI;
 
 import "cogment/api/common.proto";
 import "cogment/api/environment.proto";
