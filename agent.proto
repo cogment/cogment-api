@@ -23,7 +23,7 @@ import "cogment/api/common.proto";
 // Expected metadata for all calls except `Version`:
 //   - trial-id: The id of the trial
 //   - actor-name: The name of the actor within the trial
-service AgentEndpoint {
+service ServiceActorSP {
 
   rpc OnStart(AgentStartRequest) returns (AgentStartReply) {}
 

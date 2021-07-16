@@ -23,7 +23,7 @@ import "cogment/api/common.proto";
 // orchestrator.
 // Expected metadata for all calls except `Version`:
 //   - trial-id: The id of the trial
-service EnvironmentEndpoint {
+service EnvironmentSP {
   rpc OnStart(EnvStartRequest) returns (EnvStartReply) {}
 
   rpc OnAction(stream EnvActionRequest) returns (stream EnvActionReply) {}

@@ -20,7 +20,7 @@ import "cogment/api/common.proto";
 import "cogment/api/environment.proto";
 
 // This service is used to manage Trial lifecycle.
-service TrialLifecycle {
+service TrialLifecycleSP {
 
   // Begin a new trial.
   // Expected headers: None
@@ -105,7 +105,7 @@ message TrialListEntry {
 }
 
 // This service is used by an actor within a trial, using the "client" API.
-service ClientActor {
+service ClientActorSP {
 
   // Expected headers: None
   rpc JoinTrial(TrialJoinRequest) returns (TrialJoinReply) {}

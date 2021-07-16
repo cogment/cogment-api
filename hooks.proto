@@ -20,7 +20,7 @@ import "cogment/api/common.proto";
 
 // Expected metadata for all calls except `Version`:
 //   - trial-id: The id of the trial
-service TrialHooks {
+service TrialHooksSP {
   rpc OnPreTrial(PreTrialContext) returns (PreTrialContext) {}
   
   rpc Version(VersionRequest) returns (VersionInfo) {}

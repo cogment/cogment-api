@@ -19,7 +19,7 @@ package cogmentAPI;
 import "cogment/api/common.proto";
 import "cogment/api/environment.proto";
 
-service LogExporter {
+service LogExporterSP {
   // Expected headers:
   // - trial-id
   rpc OnLogSample(stream LogExporterSampleRequest) returns (stream LogExporterSampleReply) {}
