@@ -15,11 +15,11 @@ The Cogment framework API is implemented using [gRPC](https://grpc.github.io/) s
 Retrieval of a version of the API can be done by a simple script:
 
 ```bash
-COGMENT_API_DIR="./api"
+COGMENT_API_DIR="."
 COGMENT_API_VERSION="v1.0.0"
 
-mkdir -p "${COGMENT_API_OUT_DIR}"
-curl -L "https://cogment.github.io/cogment-api/${COGMENT_API_DIR}/cogment-api-${COGMENT_API_VERSION}.tar.gz" | tar xz -C "${COGMENT_API_DIR}"
+mkdir -p "${COGMENT_API_DIR}/cogment/api"
+curl -L "https://cogment.github.io/cogment-api/${COGMENT_API_VERSION}/cogment-api-${COGMENT_API_VERSION}.tar.gz" | tar xz -C "${COGMENT_API_DIR}/cogment/api"
 ```
 
 ## Developers
