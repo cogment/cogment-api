@@ -10,6 +10,18 @@ This module, `cogment-api`, is the [gRPC API](https://docs.cogment.ai/cogment/co
 
 The Cogment framework API is implemented using [gRPC](https://grpc.github.io/) services. gRPC automatically generates client and server stubs in a plethora of programming languages using protocol buffers. The protocol buffer data and associated language defines the gRPC service and method request and response types in `.proto` files. The cogment api is composed of a set of `.proto` files within which the communication between the Cogment framework services are defined.
 
+## Retrieve
+
+Retrieval of a version of the API can be done by a simple script:
+
+```bash
+COGMENT_API_DIR="./api"
+COGMENT_API_VERSION="v1.0.0"
+
+mkdir -p "${COGMENT_API_OUT_DIR}"
+curl -L "https://cogment.github.io/cogment-api/${COGMENT_API_DIR}/cogment-api-${COGMENT_API_VERSION}.tar.gz" | tar xz -C "${COGMENT_API_DIR}"
+```
+
 ## Developers
 
 ### Release process
