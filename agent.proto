@@ -18,66 +18,54 @@ package cogmentAPI;
 
 import "cogment/api/common.proto";
 
-// This is the connection between a model application and the orchestrator.
-// The service is hosted on the model.
-// Expected metadata for all calls except `Version`:
-//   - trial-id: The id of the trial
-//   - actor-name: The name of the actor within the trial
 service ServiceActorSP {
+  // Expected metadata:
+  //   - trial-id: The id of the trial
+  //   - actor-name: The name of the actor within the trial
+  rpc RunTrial(stream ServiceActorRunInput) returns (stream ServiceActorRunOutput) {}
 
-  rpc OnStart(AgentStartRequest) returns (AgentStartReply) {}
-
-  rpc OnObservation(stream AgentObservationRequest) returns (stream AgentActionReply) {}
-  rpc OnReward(AgentRewardRequest) returns (AgentRewardReply) {}
-  rpc OnMessage(AgentMessageRequest) returns (AgentMessageReply) {}
-
-  rpc OnEnd(AgentEndRequest) returns (AgentEndReply) {}
-
+  // Expected metadata: None
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
 
 
-// Requests that a single agent be created.
-message AgentStartRequest {
+message ServiceActorRunInput {
+  CommunicationState state = 1;
+
+  oneof data {
+    // Should always be the first "normal" message in the stream (new trial or reconnection)
+    ServiceActorInitialInput init_input = 2;
+
+    Observation observation = 3;
+    Reward reward = 4;
+    Message message = 5;
+    string details = 6;  // Used for unexpected situations.  E.g. reason for hard END state (without LAST/LAST_ACK)
+  }
+}
+
+message ServiceActorRunOutput {
+  CommunicationState state = 1;
+
+  oneof data {
+    // Should always be the first "normal" message in the stream in response to an `init_input`
+    ServiceActorInitialOutput init_output = 2;
+
+    Action action = 3;
+    Reward reward = 4;
+    Message message = 5;
+    string details = 6;  // Used for unexpected situations.  E.g. reason for hard END state (without LAST/LAST_ACK)
+  }
+}
+
+message ServiceActorInitialInput {
+  string actor_class = 1;
+
   // Name of the actor implementation to use.
-  // This can be useful if there are multiple actor implementations
-  // being served from the same service.
-  string impl_name = 1;
+  string impl_name = 2;
 
-  // Project-specific actor configuration. The content has to match the
-  // actor's class config_type.
-  ActorConfig config = 2;
-
-  // Actors present in the trial (inclusive of the new actor).
-  repeated TrialActor actors_in_trial = 3;
+  // Project-specific actor configuration.
+  ActorConfig config = 3;
 }
 
-message AgentStartReply {}
+message ServiceActorInitialOutput {}
 
-message AgentObservationRequest {
-  Observation observation = 1;
-}
-
-message AgentActionReply {
-  Action action = 1;
-  repeated Reward rewards = 2;
-  repeated Message messages = 3;
-}
-
-message AgentRewardRequest {
-  Reward reward = 1;
-}
-
-message AgentRewardReply {}
-
-message AgentMessageRequest {
-  repeated Message messages = 1;
-}
-
-message AgentMessageReply {};
-
-message AgentEndRequest {
-  ActorPeriodData final_data = 1;
-}
-
-message AgentEndReply {}

@@ -117,14 +117,14 @@ message Action {
 
 // **************** REWARDS ***************** //
 message RewardSource {
-  string sender_name = 1;  // Not needed when sending a reward
+  string sender_name = 1;  // Not needed when sending
   float value = 2;
   float confidence = 3;
   google.protobuf.Any user_data = 4;
 }
 
 message Reward {
-  string receiver_name = 1;
+  string receiver_name = 1;  // Can contain wildcards when received by the Orchestrator
   sint64 tick_id = 2;
   float value = 3;
 
@@ -136,8 +136,8 @@ message Reward {
 // **************** MESSAGES ****************** //
 message Message {
   sint64 tick_id = 1;
-  string sender_name = 2;
-  string receiver_name = 3;
+  string sender_name = 2;  // Not needed when sending
+  string receiver_name = 3;  // Can contain wildcards when received by the Orchestrator
   google.protobuf.Any payload = 4;
 }
 
@@ -156,4 +156,22 @@ enum TrialState {
   RUNNING = 3;
   TERMINATING = 4;
   ENDED = 5;
+}
+enum CommunicationState {
+  UNKNOWN_COM_STATE = 0;
+  NORMAL = 1;  // Always contains data
+  HEARTBEAT = 2;  // No data. When received as incoming, must be responded in kind as outgoing.
+
+  // Soft end sequence: Orchestrator sends LAST, 
+  //                    exchange of (NORMAL) finalizing data,
+  //                    component sends LAST_ACK (component stops sending after this),
+  //                    Orchestrator sends (NORMAL) finalizing data,
+  //                    Orchestrator terminates communication with END.
+  // Hard end: Component or Orchestrator sends END (no LAST/LAST_ACK handshake).
+  //
+  // These communication states are not sent with data, except 'END' which may have a
+  // 'details' string.
+  LAST = 3;      // The trial is ending, last data is following.
+  LAST_ACK = 4;  // Last data has been sent, will not send anything after this, but still receiving.
+  END = 5;       // Final communication, the trial has ended.
 }
