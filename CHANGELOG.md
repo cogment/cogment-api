@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
-- Added Discovery service
-- Added health check service
+- Add Discovery service
+- Add health check service
+- Add Model Registry service
 
 ### Changed
 
