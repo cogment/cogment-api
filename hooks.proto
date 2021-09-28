@@ -26,6 +26,7 @@ service TrialHooksSP {
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
 
+// TODO: Remove the name "context" from this type to reduce possible confusion
 message PreTrialContext {
   string impl_name = 1;
   TrialParams params = 2;

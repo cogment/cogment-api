@@ -148,6 +148,57 @@ message ActorPeriodData {
   repeated Message messages = 3;
 }
 
+// Sent by actor on 'RunTrial' rpc call
+message ActorRunTrialOutput {
+  CommunicationState state = 1;
+
+  oneof data {
+    // Should always be the first "normal" message in the stream
+    // Send by a client actor to initiate a connection.  Send by a service actor in response to 'init_input'.
+    ActorInitialOutput init_output = 2;
+
+    Action action = 3;
+    Reward reward = 4;
+    Message message = 5;
+    string details = 6;  // Used for unexpected situations.  E.g. reason for hard END state (without LAST/LAST_ACK)
+  }
+}
+
+// Received by actor on RunTrial rpc call
+message ActorRunTrialInput {
+  CommunicationState state = 1;
+
+  oneof data {
+    // Should always be the first "normal" message in the stream
+    // Received by a service actor to initiate a connection. Received by a client actor in response to 'init_output'.
+    ActorInitialInput init_input = 2;
+
+    Observation observation = 3;
+    Reward reward = 4;
+    Message message = 5;
+    string details = 6;  // Used for unexpected situations.  E.g. reason for hard END state (without LAST/LAST_ACK)
+  }
+}
+
+message ActorInitialOutput {
+  // Not used for service actors
+  oneof slot_selection {
+    string actor_class = 1;  // Join at any available actor slot for that actor class
+    string actor_name = 2;  // Join at a specific actor_slot
+  }
+}
+
+message ActorInitialInput {
+  string actor_name = 1;
+  string actor_class = 2;
+
+  // Name of the actor implementation to use.
+  string impl_name = 3;
+
+  // Project-specific actor configuration.
+  ActorConfig config = 4;
+}
+
 // **************** OTHER ****************** //
 enum TrialState {
   UNKNOWN = 0;
@@ -157,6 +208,7 @@ enum TrialState {
   TERMINATING = 4;
   ENDED = 5;
 }
+
 enum CommunicationState {
   UNKNOWN_COM_STATE = 0;
   NORMAL = 1;  // Always contains data

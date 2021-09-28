@@ -21,51 +21,9 @@ import "cogment/api/common.proto";
 service ServiceActorSP {
   // Expected metadata:
   //   - trial-id: The id of the trial
-  //   - actor-name: The name of the actor within the trial
-  rpc RunTrial(stream ServiceActorRunInput) returns (stream ServiceActorRunOutput) {}
+  //   - actor-name: The name of the actor within the trial  (TODO: Remove this)
+  rpc RunTrial(stream ActorRunTrialInput) returns (stream ActorRunTrialOutput) {}
 
   // Expected metadata: None
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
-
-
-message ServiceActorRunInput {
-  CommunicationState state = 1;
-
-  oneof data {
-    // Should always be the first "normal" message in the stream (new trial or reconnection)
-    ServiceActorInitialInput init_input = 2;
-
-    Observation observation = 3;
-    Reward reward = 4;
-    Message message = 5;
-    string details = 6;  // Used for unexpected situations.  E.g. reason for hard END state (without LAST/LAST_ACK)
-  }
-}
-
-message ServiceActorRunOutput {
-  CommunicationState state = 1;
-
-  oneof data {
-    // Should always be the first "normal" message in the stream in response to an `init_input`
-    ServiceActorInitialOutput init_output = 2;
-
-    Action action = 3;
-    Reward reward = 4;
-    Message message = 5;
-    string details = 6;  // Used for unexpected situations.  E.g. reason for hard END state (without LAST/LAST_ACK)
-  }
-}
-
-message ServiceActorInitialInput {
-  string actor_class = 1;
-
-  // Name of the actor implementation to use.
-  string impl_name = 2;
-
-  // Project-specific actor configuration.
-  ActorConfig config = 3;
-}
-
-message ServiceActorInitialOutput {}
-
