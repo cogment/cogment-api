@@ -21,7 +21,6 @@ import "cogment/api/common.proto";
 service ServiceActorSP {
   // Expected metadata:
   //   - trial-id: The id of the trial
-  //   - actor-name: The name of the actor within the trial  (TODO: Remove this)
   rpc RunTrial(stream ActorRunTrialInput) returns (stream ActorRunTrialOutput) {}
 
   // Expected metadata: None

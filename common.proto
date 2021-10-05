@@ -82,12 +82,12 @@ message TrialParams {
 
 // Represents the presence of an actor within a trial
 message TrialActor {
+  // The name of the actor.
+  string name = 1;
+
   // Which actor class this actor belongs to. This has to match
   // an entry in the project's cogment.yaml
-  string actor_class = 1;
-
-  // The name of the actor.
-  string name = 2;
+  string actor_class = 2;
 }
 
 // **************** OBSERVATIONS ***************** //
@@ -148,22 +148,6 @@ message ActorPeriodData {
   repeated Message messages = 3;
 }
 
-// Sent by actor on 'RunTrial' rpc call
-message ActorRunTrialOutput {
-  CommunicationState state = 1;
-
-  oneof data {
-    // Should always be the first "normal" message in the stream
-    // Send by a client actor to initiate a connection.  Send by a service actor in response to 'init_input'.
-    ActorInitialOutput init_output = 2;
-
-    Action action = 3;
-    Reward reward = 4;
-    Message message = 5;
-    string details = 6;  // Used for unexpected situations.  E.g. reason for hard END state (without LAST/LAST_ACK)
-  }
-}
-
 // Received by actor on RunTrial rpc call
 message ActorRunTrialInput {
   CommunicationState state = 1;
@@ -180,11 +164,19 @@ message ActorRunTrialInput {
   }
 }
 
-message ActorInitialOutput {
-  // Not used for service actors
-  oneof slot_selection {
-    string actor_class = 1;  // Join at any available actor slot for that actor class
-    string actor_name = 2;  // Join at a specific actor_slot
+// Sent by actor on 'RunTrial' rpc call
+message ActorRunTrialOutput {
+  CommunicationState state = 1;
+
+  oneof data {
+    // Should always be the first "normal" message in the stream
+    // Sent by a client actor to initiate a connection.  Sent by a service actor in response to 'init_input'.
+    ActorInitialOutput init_output = 2;
+
+    Action action = 3;
+    Reward reward = 4;
+    Message message = 5;
+    string details = 6;  // Used for unexpected situations.  E.g. reason for hard END state (without LAST/LAST_ACK)
   }
 }
 
@@ -197,6 +189,14 @@ message ActorInitialInput {
 
   // Project-specific actor configuration.
   ActorConfig config = 4;
+}
+
+message ActorInitialOutput {
+  // Not used for service actors
+  oneof slot_selection {
+    string actor_class = 1;  // Join at any available actor slot for that actor class
+    string actor_name = 2;  // Join at a specific actor_slot
+  }
 }
 
 // **************** OTHER ****************** //
@@ -214,7 +214,7 @@ enum CommunicationState {
   NORMAL = 1;  // Always contains data
   HEARTBEAT = 2;  // No data. When received as incoming, must be responded in kind as outgoing.
 
-  // Soft end sequence: Orchestrator sends LAST, 
+  // Soft end sequence: Orchestrator or Environment sends LAST, 
   //                    exchange of (NORMAL) finalizing data,
   //                    component sends LAST_ACK (component stops sending after this),
   //                    Orchestrator sends (NORMAL) finalizing data,
