@@ -61,11 +61,12 @@ message TrialStartRequest {
 message TrialStartReply {
   // This trial identifier is used to match requests to trials
   string trial_id = 1;
-
-  repeated TrialActor actors_in_trial = 2;
 }
 
-message TerminateTrialRequest {}
+message TerminateTrialRequest {
+  bool hard_termination = 1;
+}
+
 message TerminateTrialReply {}
 
 message TrialInfoRequest {
