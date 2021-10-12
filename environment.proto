@@ -35,7 +35,7 @@ message ObservationSet {
   sint64 tick_id = 1;
   fixed64 timestamp = 2;
 
-  repeated ObservationData observations = 3;
+  repeated bytes observations = 3;
 
   // Maps actors to observations.  This list has the same number and order
   // of items as the `EnvInitialInput.actors_in_trial` received on start.
@@ -47,12 +47,13 @@ message ObservationSet {
 
 // Encodes the actions from all actors within the environment
 message ActionSet {
+  uint64 tick_id = 1;
+  fixed64 timestamp = 2;
+
   // This list has the same number and order of items as the
   // `EnvInitialInput.actors_in_trial` received on start.
   // The bytes must match the type in the cog_settings actor_classes->action_space
-  repeated bytes actions = 1;
-
-  uint64 tick_id = 2;
+  repeated bytes actions = 3;
 }
 
 // Received by environment on RunTrial rpc call
