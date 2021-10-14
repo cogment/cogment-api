@@ -135,11 +135,6 @@ message Message {
 }
 
 // **************** ACTORS ****************** //
-message ActorPeriodData {
-  repeated Observation observations = 1;
-  repeated Reward rewards = 2;
-  repeated Message messages = 3;
-}
 
 // Received by actor on RunTrial rpc call
 message ActorRunTrialInput {
