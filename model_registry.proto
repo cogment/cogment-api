@@ -43,7 +43,7 @@ message ModelInfo {
 message ModelVersionInfo {
   string model_id = 1;
   uint32 version_number = 2;
-  fixed64 creation_timestamp = 3; // Timestamp for the creation of this version
+  fixed64 creation_timestamp = 3; // When the model was created as nanosecond unix timestamp
   bool archived = 4; // Is this version archived
   string data_hash = 5; // SHA 256 hash (encoded in base64) of this version's data, can be used to validate the data and for caching purposes
   fixed64 data_size = 6; // Size (in bytes) of this version's data
