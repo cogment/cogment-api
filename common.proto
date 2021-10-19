@@ -44,6 +44,12 @@ message EnvironmentConfig {
   bytes content = 1;
 }
 
+message DatalogParams {
+  string type = 1;  // Type of data: 'grpc', 'none'
+  string endpoint = 2;
+  repeated string exclude_fields = 3;
+}
+
 message EnvironmentParams {
   string name = 1;
   string endpoint = 2;
@@ -66,19 +72,16 @@ message TrialParams {
   // Client-provided configuration
   TrialConfig trial_config = 1;
   
-  // Environment data
-  EnvironmentParams environment = 2;
-
-  // Actor Data
-  repeated ActorParams actors = 3;
-
+  DatalogParams datalog = 2;
+  EnvironmentParams environment = 3;
+  repeated ActorParams actors = 4;
 
   // After that many steps happen, the trial is automatically ended.
-  uint32 max_steps = 4;
+  uint32 max_steps = 5;
 
   // After this amount of time (in seconds) has elapsed without any activity
   // on a trial, that trial is elligible for garbage collection 
-  uint32 max_inactivity = 5;
+  uint32 max_inactivity = 6;
 }
 
 // Represents the presence of an actor within a trial
@@ -176,8 +179,11 @@ message ActorInitialInput {
   // Name of the actor implementation to use.
   string impl_name = 3;
 
+  // Name of the environment in trial
+  string env_name = 4;
+
   // Project-specific actor configuration.
-  ActorConfig config = 4;
+  ActorConfig config = 5;
 }
 
 message ActorInitialOutput {

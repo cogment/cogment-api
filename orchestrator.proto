@@ -86,14 +86,15 @@ message TrialInfoRequest {
 message TrialInfo {
   string trial_id = 1;
   TrialState state = 2;
-  uint64 tick_id = 3;
-  fixed64 trial_duration = 4;  // In nanoseconds
+  string env_name = 3;
+  uint64 tick_id = 4;
+  fixed64 trial_duration = 5;  // In nanoseconds
 
   // Only present if requested
-  ObservationSet latest_observation = 5;
+  ObservationSet latest_observation = 6;
 
   // Empty if not requested
-  repeated TrialActor actors_in_trial = 6;
+  repeated TrialActor actors_in_trial = 7;
 }
 
 message TrialInfoReply {
