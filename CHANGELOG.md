@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Fixed
+
+- Fix naming collision in the newly introduced trial datastore service messages
+
 ### Added
 
 - Add test to check compability for every minor version of protobuf >=3.15
