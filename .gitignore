@@ -7,3 +7,6 @@ __pycache__
 
 # Backup of "sed-ed" files
 *.bak
+
+# Testing directory
+.testing

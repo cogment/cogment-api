@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+
+- Add test to check compability for every minor version of protobuf >=3.15
+
 ## v1.2.0 - 2021-10-15
 
 ### Added
