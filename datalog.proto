@@ -21,24 +21,26 @@ import "cogment/api/environment.proto";
 
 import "google/protobuf/any.proto";
 
-service LogExporterSP {
+service DatalogSP {
   // Expected headers:
   // - trial-id
   // - user-id
-  rpc OnLogSample(stream LogExporterSampleRequest) returns (stream LogExporterSampleReply) {}
+  rpc RunTrialDatalog(stream RunTrialDatalogInput) returns (stream RunTrialDatalogOutput) {}
 
   // Expected headers: None
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
 
-message LogExporterSampleRequest {
+// Received by datalog service on rpc call
+message RunTrialDatalogInput {
   oneof msg {
     TrialParams trial_params = 1;
     DatalogSample sample = 2;
   }
 }
 
-message LogExporterSampleReply {}
+// Sent by datalog service on rpc call
+message RunTrialDatalogOutput {}
 
 message SampleInfo {
   uint64 tick_id = 1;

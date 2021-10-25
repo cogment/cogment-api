@@ -53,8 +53,8 @@ message DatalogParams {
 message EnvironmentParams {
   string name = 1;
   string endpoint = 2;
-  EnvironmentConfig config = 3;
-  string implementation = 4;
+  string implementation = 3;
+  EnvironmentConfig config = 4;
 }
 
 message ActorParams {
