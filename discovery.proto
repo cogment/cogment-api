@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package cogment;
+package cogmentAPI;
 
 import "cogment/api/common.proto";
 
@@ -98,7 +98,6 @@ message InquireReply {
   repeated FullServiceData data = 1;
 }
 
-
 message ServiceEndpoint {
   enum Protocol {
     GRPC = 0;
@@ -109,7 +108,6 @@ message ServiceEndpoint {
   string hostname = 2;
   uint32 port = 3;
 }
-
 
 message ServiceDetails {
   ServiceType type = 1;

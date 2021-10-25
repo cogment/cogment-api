@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package cogment;
+package cogmentAPI;
 
 // API for model registry, it stores versioned model data and their metadata
 service ModelRegistrySP {
