@@ -26,14 +26,14 @@ service TrialLifecycleSP {
   // Expected headers: None
   rpc StartTrial(TrialStartRequest) returns (TrialStartReply) {}
 
-  // Terminate an existing trial.
+  // Terminate existing trial(s).
   // Expected headers: 
-  // - trial-id
+  // - trial-id <one or more>
   rpc TerminateTrial(TerminateTrialRequest) returns (TerminateTrialReply) {}
 
   // Get extra information about a specific trial.
   // Expected headers: 
-  // - trial-id <optional>
+  // - trial-id <zero or more>
   rpc GetTrialInfo(TrialInfoRequest) returns (TrialInfoReply) {}
 
   // Get information about the trials currently running in the orchestrator.
@@ -88,7 +88,7 @@ message TrialInfo {
   TrialState state = 2;
   string env_name = 3;
   uint64 tick_id = 4;
-  fixed64 trial_duration = 5;  // In nanoseconds
+  fixed64 trial_duration = 5;  // In nanoseconds.  If not ended; duration so far.
 
   // Only present if requested
   ObservationSet latest_observation = 6;
