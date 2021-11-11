@@ -45,9 +45,8 @@ message EnvironmentConfig {
 }
 
 message DatalogParams {
-  string type = 1;  // Type of data: 'grpc', 'none'
-  string endpoint = 2;
-  repeated string exclude_fields = 3;
+  string endpoint = 1;
+  repeated string exclude_fields = 2;
 }
 
 message EnvironmentParams {
