@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Changed
+
+- Complete overhaul of the API
+- Change to streaming model for actors and environment
+- Change of package names and service names
+- Removal of "delta" observations
+- Addition of Datalog to parameters
+
 ## v1.2.1 - 2021-10-21
 
 ### Fixed
