@@ -49,8 +49,12 @@ service TrialLifecycleSP {
 
 // Encodes a request from a master to start a new trial.
 message TrialStartRequest {
-  // Trial config sent to the pre-hooks
+  // Trial config sent to the pre-trial hooks. Exclusive to params.
   TrialConfig config = 1;
+
+  // Fully configured params to bypass pre-trial hooks. Exclusive to config.
+  // Not a "oneof" (with config) for backward compatibility.
+  TrialParams params = 4;
 
   // Identifier of the user starting the trial (for bookkeeping purposes)
   string user_id = 2;
