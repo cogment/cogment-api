@@ -19,7 +19,7 @@ package cogmentAPI;
 import "cogment/api/common.proto";
 
 // Used for service discovery and first line load balancing.
-service Discovery {
+service DiscoverySP {
 
   // Register as a service.
   //  - There will be a one-to-one match between requests and replies
@@ -43,7 +43,6 @@ service Discovery {
   // Expected metadata: None
   rpc Version(VersionRequest) returns (VersionInfo) {}
 }
-
 
 message RegisterRequest {
   // URL where to connect to the service.
