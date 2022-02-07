@@ -25,19 +25,19 @@ service DiscoverySP {
   //  - There will be a one-to-one match between requests and replies
   //  - Each request can succeed or fail individually
   // Expected metadata:
-  //   - Authentication Token (may be optional, at the discretion of the implemetation).
+  //   - authentication-token (may be optional, at the discretion of the implemetation).
   rpc Register(stream RegisterRequest) returns (stream RegisterReply) {}
 
   // Deregister a service.
   //  - There will be a one-to-one match between requests and replies
   //  - Each request can succeed or fail individually
   // Expected metadata:
-  //   - Authentication Token (required if it was used to register).
+  //   - authentication-token (required if it was used to register).
   rpc Deregister(stream DeregisterRequest) returns (stream DeregisterReply) {}
 
   // Inquire about registered services.
   // Expected metadata:
-  //   - Authentication Token (may be optional, at the discretion of the implemetation).
+  //   - authentication-token (may be optional, at the discretion of the implemetation).
   rpc Inquire(InquireRequest) returns (stream InquireReply) {}
 
   // Expected metadata: None
@@ -94,7 +94,7 @@ message InquireRequest {
 }
 
 message InquireReply {
-  repeated FullServiceData data = 1;
+  FullServiceData data = 1;
 }
 
 message ServiceEndpoint {

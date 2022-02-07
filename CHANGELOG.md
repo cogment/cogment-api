@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The `StartTrial` has a new attribute `params`
 - The discovery service point name changed to `DiscoverySP`
 
+### Fixed
+
+- Discovery API 'Inquire' reply not a repeated field
+- Clarification of Discovery API metadata name
+
 ## v2.0.0 - 2021-11-12
 
 ### Changed
