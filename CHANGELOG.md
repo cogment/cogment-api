@@ -7,15 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+
+- Add `COGMENT` protocol to discovery endpoint
+- Add `UNKNOWN` to all discovery enums
+
 ### Changed
 
-- The `StartTrial` has a new attribute `params`
+- The `StartTrial` has a new attribute `params` (backward compatible)
 - The discovery service point name changed to `DiscoverySP`
 
 ### Fixed
 
 - Discovery API 'Inquire' reply not a repeated field
-- Clarification of Discovery API metadata name
+- Clarification of Discovery API metadata name (in comments)
 
 ## v2.0.0 - 2021-11-12
 
