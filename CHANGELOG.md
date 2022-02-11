@@ -11,10 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Add `COGMENT` protocol to discovery endpoint
 - Add `UNKNOWN` to all discovery enums
+- The `StartTrial` has a new attribute `params`
 
 ### Changed
 
-- The `StartTrial` has a new attribute `params` (backward compatible)
 - The discovery service point name changed to `DiscoverySP`
 
 ### Fixed
