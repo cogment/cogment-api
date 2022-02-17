@@ -18,14 +18,14 @@ package cogmentAPI;
 
 import "cogment/api/common.proto";
 
-// Used for service discovery and first line load balancing.
-service DiscoverySP {
+// Used for directory (service discovery) and first line load balancing.
+service DirectorySP {
 
   // Register as a service.
   //  - There will be a one-to-one match between requests and replies
   //  - Each request can succeed or fail individually
   // Expected metadata:
-  //   - authentication-token (may be optional, at the discretion of the implemetation).
+  //   - authentication-token (may be optional, at the discretion of the implementation).
   rpc Register(stream RegisterRequest) returns (stream RegisterReply) {}
 
   // Deregister a service.

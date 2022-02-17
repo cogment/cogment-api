@@ -80,12 +80,12 @@ if [ ${verbose} == 1 ]; then
 fi
 eval "${clone_repo_cmd}"
 
-## IV - Making sure the intermediate publish director exists and is empty
+## IV - Making sure the intermediate publish folder exists and is empty
 pub_dir=${ROOT_PUB_DIR}/${version}
 clear_publish_dir_cmd="mkdir -p ${pub_dir};
   rm -rf ${pub_dir}/*"
 if [ ${verbose} == 1 ]; then
-  printf "Clearing the publish directory:\n  %s\n\n" "${clear_publish_dir_cmd}"
+  printf "Clearing the publish folder:\n  %s\n\n" "${clear_publish_dir_cmd}"
 fi
 eval "${clear_publish_dir_cmd}"
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Changed
+
+- Change name of discovery service to the directory
+
 ## v2.1.0 - 2022-02-11
 
 ### Added
